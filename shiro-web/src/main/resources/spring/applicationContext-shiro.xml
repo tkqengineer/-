@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--配置realm-->
+    <bean id="realm" class="com.alex.realm.MyRealm"/>
+
+
+    <!--配置安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="realm"/>
+    </bean>
+
+    <!--配置shiro的过滤器-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+
+        <property name="securityManager" ref="securityManager"/>
+        <!--认证的url-->
+        <property name="loginUrl" value="/login.action"/>
+        <!--认证通过的url-->
+        <property name="successUrl" value="/success.jsp"/>
+        <!--没有授权的url-->
+        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+        <property name="filterChainDefinitions">
+            <!--配置过滤器链-->
+            <value>
+
+                <!--对登陆请求放行-->
+                /login.jsp = anon
+                <!--配置退出过滤器 这个路径可以不存在
+                退出后会访问的页面是 路径是 /
+                -->
+                /logout.action = logout
+                <!--对其他资源需要进行认证-->
+                /** = authc
+            </value>
+        </property>
+
+    </bean>
+
+</beans>
