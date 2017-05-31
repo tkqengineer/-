@@ -3,13 +3,28 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--配置realm-->
-    <bean id="realm" class="com.alex.realm.MyRealm"/>
 
+    <!--配置凭证匹配器-->
+    <!--为了解决安全性问题-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="2"/>
+    </bean>
+    <!--配置realm-->
+    <bean id="realm" class="com.alex.realm.MyRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+    <!--配置缓存管理器-->
+    <!--为了解决授权时候连续查询数据库-->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml"/>
+    </bean>
 
     <!--配置安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="realm"/>
+        <property name="cacheManager" ref="cacheManager"/>
     </bean>
 
     <!--配置shiro的过滤器-->
@@ -19,6 +34,7 @@
         <!--认证的url-->
         <property name="loginUrl" value="/login.action"/>
         <!--认证通过的url-->
+        <!--这个url只有在shiro的url队列为空才会生效(个人理解)-->
         <property name="successUrl" value="/success.jsp"/>
         <!--没有授权的url-->
         <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
