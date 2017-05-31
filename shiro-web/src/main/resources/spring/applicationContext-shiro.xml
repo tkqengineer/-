@@ -44,12 +44,29 @@
     </bean>
 
 
+    <!--配置rememberMe-->
+    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <!-- 设置Cookie在浏览器中保存内容的名字，由用户自己来设置 -->
+        <constructor-arg index="0" value="remember"/>
+        <!-- 保证该系统不会受到跨域的脚本操作供给 -->
+        <property name="httpOnly" value="true"/>
+        <!-- 定义Cookie的过期时间为一小时 -->
+        <property name="maxAge" value="3600"/>
+    </bean>
+
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie" ref="rememberMeCookie"/>
+    </bean>
+
+
     <!--配置安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="realm"/>
         <property name="cacheManager" ref="cacheManager"/>
         <property name="sessionManager" ref="sessionManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>
     </bean>
+
 
     <!--配置shiro的过滤器-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
@@ -72,6 +89,9 @@
                 退出后会访问的页面是 路径是 /
                 -->
                 /logout.action = logout
+
+                <!--配置可以rememberMe用户可以访问的路径-->
+                /permission.action = user
                 <!--对其他资源需要进行认证-->
                 /** = authc
             </value>
