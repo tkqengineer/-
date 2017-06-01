@@ -11,7 +11,10 @@
 
     <input type="text" name="username">
     <input type="text" name="password">
+    <input type="checkbox" value="true" name="rememberMe">记住我
     <input type="submit" value="提交">
+
+
 
 </form>
 
