@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2017-05-30 22:26:24
+Date: 2017-06-05 10:09:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -71,23 +71,6 @@ INSERT INTO `roles` VALUES ('1', 'admin');
 INSERT INTO `roles` VALUES ('2', 'vip');
 
 -- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES ('1', 'alex', '123456');
-INSERT INTO `user` VALUES ('2', 'admin', 'admin');
-
--- ----------------------------
 -- Table structure for user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `user_role`;
@@ -101,3 +84,21 @@ CREATE TABLE `user_role` (
 -- ----------------------------
 INSERT INTO `user_role` VALUES ('1', '1');
 INSERT INTO `user_role` VALUES ('2', '2');
+
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `salt` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of users
+-- ----------------------------
+INSERT INTO `users` VALUES ('1', 'alex', '1c7e3d68884894ebeb954f75f865fb80', 'aaa');
+INSERT INTO `users` VALUES ('2', 'admin', 'admin', null);
