@@ -58,7 +58,6 @@
         <property name="cookie" ref="rememberMeCookie"/>
     </bean>
 
-
     <!--配置安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="realm"/>
@@ -91,7 +90,7 @@
                 /logout.action = logout
 
                 <!--配置可以rememberMe用户可以访问的路径-->
-                /permission.action = user
+               <!-- /permission.action = user-->
                 <!--对其他资源需要进行认证-->
                 /** = authc
             </value>

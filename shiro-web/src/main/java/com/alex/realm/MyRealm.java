@@ -1,5 +1,7 @@
 package com.alex.realm;
 
+import com.alex.bean.User;
+import com.alex.mapper.UserMapper;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -9,14 +11,23 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.security.Permissions;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Alex on 2017/5/30.
  */
 public class MyRealm extends AuthorizingRealm {
+
+    /*
+    *
+    *报错因为idea 工具问题
+    * */
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 授权方法
@@ -29,12 +40,12 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        /*
+        *
+        * 从数据库中查询出用户的权限
+        * */
 
-        ArrayList<String> permissions = new ArrayList<String>();
-
-        permissions.add("create:user:add");
-        permissions.add("create:user:update");
-        permissions.add("create:user:delete");
+        List<String> permissions = this.userMapper.getResourceByName((String) principals.getPrimaryPrincipal());
 
         simpleAuthorizationInfo.addStringPermissions(permissions);
 
@@ -52,6 +63,15 @@ public class MyRealm extends AuthorizingRealm {
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
-        return new SimpleAuthenticationInfo("alex", "1c7e3d68884894ebeb954f75f865fb80", ByteSource.Util.bytes("aaa"), getName());
+        User user = this.userMapper.getUserByName((String) token.getPrincipal());
+
+        System.out.println(user);
+
+        if (user!=null){
+            return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()), getName());
+        }
+
+        return null;
+
     }
 }
