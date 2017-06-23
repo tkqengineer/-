@@ -17,53 +17,53 @@
 
     <!--配置缓存管理器-->
     <!--为了解决授权时候连续查询数据库-->
-    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+    <!--<bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
         <property name="cacheManagerConfigFile" value="classpath:shiro-ehcache.xml"/>
-    </bean>
+    </bean>-->
 
 
-    <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
-    <!-- 会话管理器，设定会话超时及保存 -->
+   <!-- <bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator"/>
+    &lt;!&ndash; 会话管理器，设定会话超时及保存 &ndash;&gt;
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-        <!-- 全局会话超时时间（单位毫秒），默认30分钟 -->
+        &lt;!&ndash; 全局会话超时时间（单位毫秒），默认30分钟 &ndash;&gt;
         <property name="globalSessionTimeout" value="1800000"/>
         <property name="sessionDAO" ref="sessionDAO"/>
     </bean>
-    <!-- 会话验证调度器，每30分钟执行一次验证 -->
-    <!-- <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler"> -->
+    &lt;!&ndash; 会话验证调度器，每30分钟执行一次验证 &ndash;&gt;
+    &lt;!&ndash; <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler"> &ndash;&gt;
     <bean id="sessionValidationScheduler"
           class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
         <property name="interval" value="1800000"/>
         <property name="sessionManager" ref="sessionManager"/>
     </bean>
-    <!-- sessionDAO保存认证信息 -->
+    &lt;!&ndash; sessionDAO保存认证信息 &ndash;&gt;
     <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
         <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
         <property name="cacheManager" ref="cacheManager"/>
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
     </bean>
-
+-->
 
     <!--配置rememberMe-->
-    <bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-        <!-- 设置Cookie在浏览器中保存内容的名字，由用户自己来设置 -->
+    <!--<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        &lt;!&ndash; 设置Cookie在浏览器中保存内容的名字，由用户自己来设置 &ndash;&gt;
         <constructor-arg index="0" value="remember"/>
-        <!-- 保证该系统不会受到跨域的脚本操作供给 -->
+        &lt;!&ndash; 保证该系统不会受到跨域的脚本操作供给 &ndash;&gt;
         <property name="httpOnly" value="true"/>
-        <!-- 定义Cookie的过期时间为一小时 -->
+        &lt;!&ndash; 定义Cookie的过期时间为一小时 &ndash;&gt;
         <property name="maxAge" value="3600"/>
-    </bean>
+    </bean>-->
 
-    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+   <!-- <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
         <property name="cookie" ref="rememberMeCookie"/>
     </bean>
-
+-->
     <!--配置安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="realm"/>
-        <property name="cacheManager" ref="cacheManager"/>
+        <!--<property name="cacheManager" ref="cacheManager"/>
         <property name="sessionManager" ref="sessionManager"/>
-        <property name="rememberMeManager" ref="rememberMeManager"/>
+        <property name="rememberMeManager" ref="rememberMeManager"/>-->
     </bean>
 
 

@@ -2,10 +2,7 @@ package com.alex.realm;
 
 import com.alex.bean.User;
 import com.alex.mapper.UserMapper;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationInfo;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -13,8 +10,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.security.Permissions;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,10 +17,14 @@ import java.util.List;
  */
 public class MyRealm extends AuthorizingRealm {
 
+    public MyRealm() {
+        super.setAuthenticationTokenClass(UsernamePasswordToken.class);
+    }
+
     /*
-    *
-    *报错因为idea 工具问题
-    * */
+        *
+        *报错因为idea 工具问题
+        * */
     @Autowired
     private UserMapper userMapper;
 
@@ -38,6 +37,9 @@ public class MyRealm extends AuthorizingRealm {
 
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+
+
+
 
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         /*
@@ -62,7 +64,7 @@ public class MyRealm extends AuthorizingRealm {
 
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
-
+        System.out.println(1);
         User user = this.userMapper.getUserByName((String) token.getPrincipal());
 
         System.out.println(user);
